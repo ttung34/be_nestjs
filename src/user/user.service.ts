@@ -68,7 +68,7 @@ export class UserService{
                 email: user.email
             })
 
-            console.log("tpken", token)
+            console.log("token", token)
             return {
                 message: 'Oki',
                 success: "Successfully",
