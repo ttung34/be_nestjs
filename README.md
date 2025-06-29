@@ -83,3 +83,6 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+## Middlerware 
+Phần ở giữa có vai trò là trung gian, như một hệ thống một cửa khi đến thì nó sẽ tiếp nhận yêu cầu và gửi đi nếu không đáp ứng yêu cầu thì sẽ bị từ chối luôn 

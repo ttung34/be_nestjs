@@ -4,7 +4,7 @@ import { PrismaService } from "src/service/prisma.service";
 import * as bcrypt from 'bcrypt';
 import { JwtService } from "@nestjs/jwt";
 @Injectable()
-export class UserService{
+export class UserService {
 
     constructor(private readonly prisma: PrismaService, private readonly jwtService: JwtService) { }
 
@@ -17,7 +17,7 @@ export class UserService{
                         email: data?.email
                     }
                 }
-            ) 
+            )
             
 
             if (exisUser) {
@@ -25,7 +25,7 @@ export class UserService{
             }
 
             const hashPassword = await bcrypt.hash(data.password, 10);
-            console.log("hassPassword", hashPassword);
+            console.log("hashHtPassword", hashPassword);
 
             const result = await this.prisma.user.create(
                 {
@@ -45,9 +45,9 @@ export class UserService{
         }
     }
 
-    login = async (data:LoginDto ) => {
+    login = async (data: LoginDto) => {
         try {
-            const {email, password} =data
+            const { email, password } = data
             const user = await this.prisma.user.findUnique({
                 where: {
                     email
@@ -68,7 +68,7 @@ export class UserService{
                 email: user.email
             })
 
-            console.log("token", token)
+            console.log("access_token: ", token)
             return {
                 message: 'Oki',
                 success: "Successfully",
@@ -79,6 +79,29 @@ export class UserService{
         } catch (error) {
             console.log(error)
             throw new HttpException(JSON.stringify(error), error?.status ?? 500)
+        }
+    }
+    getInformationMe = async (userId: number) => {
+        try {
+            const result = await this.prisma.user.findUnique({
+                where: {
+                id: userId,
+                },
+                select: {
+                    id: true,
+                    email: true,
+                    password: false,
+                    name: true
+                }
+            })
+            // select được dùng để lấy ra cái cần thiết trong database
+            return {
+                success: true,
+                message: "Lấy thông tin thành công",
+                data: result
+            }
+        } catch (error) {
+            throw new HttpException(error?.message ?? JSON.stringify(error), error?.status ?? 500);
         }
     }
 }
